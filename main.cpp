@@ -3,6 +3,11 @@
 // Result set -> table returned by select query
 // commit -> means save changes permanently 
 // con->setAutoCommit(false) -> means dont save automatically , i will decide when to save 
+// con -> connection
+//Prepared statement -> means sql template for placeholders
+// Result set -> table returned by select query
+// commit -> means save changes permanently 
+// con->setAutoCommit(false) -> means dont save automatically , i will decide when to save 
 
 #include<iostream>
 #include <mysql/jdbc.h>
@@ -10,45 +15,68 @@
 #include<fstream>
 #include<ctime>
 #include<cstdlib>
+#include <limits>
 using namespace std;
 #include <functional>
 #include "user.h"
 #include "transaction.h"
 #include "utils.h"
 #include "dashboard.h"
-void showMenu(){
-    cout << "\n====== BANKING SYSTEM ======\n";
-    cout << "1. Create User\n";
-    cout << "2. Login\n";
-    cout << "3. Deposit\n";
-    cout << "4. Withdraw\n";
-    cout << "5. Transfer\n";
-    cout << "6. View Transactions\n";
-    cout << "7. Check Balance\n";
-    cout << "8. Logout\n";
-    cout << "9. View Fraud Transactions\n";
-    cout << "10.Admin Panel\n";
-    cout << "11.Account Summary\n";
-    cout << "12. Monthly Spending Analytics\n";
-    cout << "0. Exit\n";
-    cout << "Enter choice: ";
+
+   void showMenu(){
+    cout << "\n========================================\n";
+    cout << "✅ Welcome back, " << name << "!\n";
+    cout << "========================================\n";
+    cout << "\n========================================\n";
+    cout << "           🏦 BANKING SYSTEM\n";
+    cout << "========================================\n";
+
+    cout << "\n🔹 USER OPERATIONS\n";
+    cout << "1.  Create User\n";
+    cout << "2.  Login\n";
+    cout << "3.  Deposit\n";
+    cout << "4.  Withdraw\n";
+    cout << "5.  Transfer\n";
+
+    cout << "\n🔹 ACCOUNT INFO\n";
+    cout << "6.  View Transactions\n";
+    cout << "7.  Check Balance\n";
+
+    cout << "\n🔹 ANALYTICS\n";
+    cout << "11. Account Summary\n";
+    cout << "12. Monthly Spending\n";
+
+    cout << "\n🔹 ADMIN\n";
+    cout << "9.  View Fraud Transactions\n";
+    cout << "10. Admin Panel\n";
+
+    cout << "\n🔹 SESSION\n";
+    cout << "8.  Logout\n";
+    cout << "0.  Exit\n";
+
+    cout << "----------------------------------------\n";
+    cout << "👉 Enter your choice: ";
 }
+
 int main(){
+
     int choice;
     UserSession current_user = {-1, "", "",""};
 
     while(true){
         if(current_user.id != -1){
-            cout << "\nLogged in as : " << current_user.name << endl;
-        }
+    cout << "\n========================================\n";
+    cout << "👤 Logged in as : " << current_user.name << endl;
+    cout << "========================================\n";
+}
 
         showMenu();
         if(!(cin >> choice)){
-    cin.clear();
-    cin.ignore(1000,'\n');
-    cout << "Invalid input\n";
-    continue;
-}
+            cin.clear();
+            cin.ignore(1000,'\n');
+            cout << "Invalid input\n";
+            continue;
+        }
 
         switch(choice){
 
@@ -70,31 +98,60 @@ int main(){
                 if (current_user.id == -1 ) {
                     cout << "Please login first\n";
                 } else {
-                    deposit(current_user.id);
+                    double amount;
+                    string note;
+                    cout << "Enter amount: ";
+                    if(!(cin >> amount)){
+                        cin.clear();
+                        cin.ignore(1000,'\n');
+                        cout << "Invalid amount\n";
+                        break;
+                    }
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "Enter note: ";
+                    getline(cin, note);
+                    deposit(current_user.id, amount, note);
                     showDashboard(current_user.id, current_user.name);
                 }
                 break;
 
-            case 4: 
+            case 4:
                 cout << "Withdraw selected\n";
                 if(current_user.id == -1){
-                    cout << "Please Login First\n";
+                    cout << "Please login first\n";
                 } else {
-                    withdraw(current_user.id);
+                
+                    double amount;
+                    string note;
+                
+                    cout << "Enter amount: ";
+                    if(!(cin >> amount)){
+                        cin.clear();
+                        cin.ignore(1000,'\n');
+                        cout << "Invalid amount\n";
+                        break;
+                    }
+                
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                
+                    cout << "Enter note: ";
+                    getline(cin, note);
+                
+                    withdraw(current_user.id, amount, note);
+                
                     showDashboard(current_user.id, current_user.name);
                 }
-                break;    
+                break;  
 
             case 5: 
                 cout << "Transfer selected\n";
                 if(current_user.id == -1){
                     cout << "Please Login First\n";
                 } else {
-                    transfer(current_user.id);
+                    transfer(current_user.id);   // 👈 your full logic runs inside
                     showDashboard(current_user.id, current_user.name);
                 }
                 break;
-
             case 6: 
                 cout << "View Transactions selected\n";
                 if (current_user.id == -1) {
