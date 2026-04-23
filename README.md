@@ -1,75 +1,120 @@
-# 🏦 Banking System (C++ + MySQL)
+# 🏦 Banking Management System (C++ + MySQL)
 
-A console-based banking system built using C++ and MySQL, simulating real-world banking operations with transaction safety, fraud detection, and admin controls.
+A console-based Banking Management System built using C++ and MySQL, designed to simulate real-world banking operations with secure money transfer, transaction safety, fraud detection, admin controls, filtering, analytics, and a structured banking dashboard.
+
+This project focuses on making banking operations realistic using ACID-compliant database transactions, prepared statements for security, and role-based access control for user and admin functionalities.
 
 ---
 
 ## 🚀 Features
 
+---
+
 ### 👤 User Management
 
-* Create new user accounts
-* Secure login with hashed passwords
-* Account blocking after multiple failed login attempts
-* Role-based access (USER / ADMIN)
+- Create new user accounts
+- Secure login system
+- Account blocking after multiple failed login attempts
+- Role-based access control (USER / ADMIN)
+- First registered user becomes ADMIN automatically
 
 ---
 
 ### 💰 Banking Operations
 
-* Deposit money
-* Withdraw money
-* Transfer money with OTP verification
-* Real-time balance updates
+- Deposit money
+- Withdraw money
+- Transfer money with OTP verification
+- Real-time balance updates
+- Account freeze protection during transactions
+- Proper balance validation before withdrawal and transfer
 
 ---
 
-### 📊 Transaction System
+### 🔐 Transaction Safety
 
-* View transaction history
-* Filter by date and amount
-* Pagination support
-* Detailed transaction logs
+- ACID-compliant money transfer using MySQL transactions
+- Rollback support if transfer fails
+- Prevents partial debit/credit updates
+- Safe transaction handling using `setAutoCommit(false)` + `commit()` + `rollback()`
+
+---
+
+### 📊 Advanced Transaction System
+
+- View transaction history
+- Filter by date range
+- Filter by amount range
+- Search transactions by user name
+- Pagination support
+- Detailed transaction logs
+- Transaction ID display
+- Suspicious transaction status display
+- Clean formatted transaction history output
 
 ---
 
 ### 🚨 Fraud Detection
 
-* Automatically flags large transactions
-* View suspicious transactions (Admin only)
+- Automatically flags large transactions (> 50000)
+- Suspicious transaction monitoring
+- Admin can review suspicious transactions
+- Helps simulate real-world fraud detection systems
 
 ---
 
 ### 🛠️ Admin Panel
 
-* Freeze / Unfreeze user accounts
-* View all users
-* View blocked users
-* Monitor suspicious transactions
+- View all users
+- View blocked users
+- Freeze user accounts
+- Unfreeze user accounts
+- Unblock users after failed login attempts
+- Monitor suspicious transactions
 
 ---
 
 ### 📈 Analytics
 
-* Account summary (total deposits, withdrawals, transfers)
-* Monthly spending analysis
+- Account summary
+  - Total deposits
+  - Total withdrawals
+  - Total transfers
+- Monthly spending analysis
+- User transaction insights
 
 ---
 
-## 🧠 Concepts Used
+### 🎨 Improved Console UI
 
-* Database Transactions (ACID properties)
-* Prepared Statements (SQL Injection safe)
-* Password Hashing
-* Role-Based Access Control
-* Error Handling & Input Validation
-* Modular Code Structure
+- Structured banking dashboard
+- Clean grouped menu sections
+- Welcome screen after login
+- Better success and error messages
+- Professional transaction display format
+- Improved user experience for console interaction
+
+---
+
+## 🧠 Key Concepts Used
+
+- MySQL Database Integration
+- Database Transactions (ACID Properties)
+- Prepared Statements (SQL Injection Safe)
+- Fraud Detection Logic
+- Role-Based Access Control
+- Input Validation
+- Pagination + Filtering
+- Exception Handling
+- Memory Management
+- Modular Code Structure
+- Admin Authorization Logic
 
 ---
 
 ## 🏗️ Project Structure
 
-```
+```text
 BankingSystem/
 │
 ├── main.cpp
@@ -78,78 +123,11 @@ BankingSystem/
 ├── transaction.cpp
 ├── dashboard.cpp
 ├── utils.cpp
+│
+├── transaction.h
+├── user.h
+├── dashboard.h
+├── utils.h
+├── db.h
+│
 └── banking.sql
-```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Install Requirements
-
-* MySQL Server
-* MySQL Connector/C++
-* C++ Compiler (Visual Studio recommended)
-
----
-
-### 2. Setup Database
-
-```
-mysql -u root -p < banking.sql
-```
-
----
-
-### 3. Compile
-
-```
-cl main.cpp db.cpp user.cpp transaction.cpp showDashboard.cpp utils.cpp ^
-/I "C:\mysql\connector\include" ^
-/link /LIBPATH:"C:\mysql\connector\lib64\vs14" mysqlcppconn.lib
-```
-
----
-
-### 4. Run
-
-```
-main.exe
-```
-
----
-
-## 🔐 Default Behavior
-
-* First registered user becomes ADMIN
-* Other users are USER
-
----
-
-## 🧪 Testing
-
-* Invalid input handling
-* OTP verification
-* Fraud detection (> 50000 transactions)
-* Insufficient balance checks
-* Filtering and pagination
-
----
-
-## 📌 Future Improvements
-
-* Convert to REST API
-* Add GUI / Web interface
-* Improve security (salted hashing)
-* Multi-threading support
-* Authentication tokens
-
----
-
-## 👨‍💻 Author
-
-Lovenish 
-B.Tech, IIT Hyderabad
-
----
-
